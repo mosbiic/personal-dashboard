@@ -8,8 +8,13 @@ from app.core.config import get_settings
 
 settings = get_settings()
 
-# 使用 asyncpg 驱动
-DATABASE_URL = settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
+# 支持 PostgreSQL 和 SQLite
+DATABASE_URL = settings.DATABASE_URL
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
+elif DATABASE_URL.startswith("sqlite://"):
+    # SQLite 异步驱动
+    DATABASE_URL = DATABASE_URL.replace("sqlite://", "sqlite+aiosqlite://")
 
 engine = create_async_engine(DATABASE_URL, echo=settings.DEBUG)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
@@ -62,7 +67,7 @@ class Activity(Base):
     title = Column(String(255))
     description = Column(Text, nullable=True)
     url = Column(String(500), nullable=True)
-    metadata = Column(JSON, nullable=True)  # 额外数据
+    meta_data = Column(JSON, nullable=True)  # 额外数据 (重命名避免与 SQLAlchemy metadata 冲突)
     
     # 时间
     occurred_at = Column(DateTime, index=True)  # 实际发生时间

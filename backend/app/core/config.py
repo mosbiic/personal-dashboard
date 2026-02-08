@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     # Encryption (for sensitive tokens)
     ENCRYPTION_KEY: str = ""  # 32-byte base64 encoded key
     
+    # API Token Protection
+    DASHBOARD_API_TOKEN: str = ""
+    
     class Config:
         env_file = ".env"
 
