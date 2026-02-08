@@ -1,9 +1,12 @@
 <script setup>
+import { computed } from 'vue'
 import { useDashboardStore } from '../stores/dashboard'
 
 const dashboard = useDashboardStore()
 
-const stats = [
+dashboard.fetchStockPortfolio()
+
+const stats = computed(() => [
   {
     title: '今日完成',
     value: () => dashboard.completedTasksToday,
@@ -20,9 +23,9 @@ const stats = [
   },
   {
     title: '股票盈亏',
-    value: () => '+0.0%',
+    value: () => dashboard.formattedStockPnl,
     icon: '📈',
-    color: 'bg-blue-500',
+    color: dashboard.totalStockPnl >= 0 ? 'bg-green-500' : 'bg-red-500',
     source: 'Stocks'
   },
   {
@@ -32,7 +35,7 @@ const stats = [
     color: 'bg-yellow-500',
     source: 'Weather'
   }
-]
+])
 </script>
 
 <template>

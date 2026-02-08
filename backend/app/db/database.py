@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, Float, Text, JSON, ForeignKey, create_engine
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Float, Text, JSON, ForeignKey, create_engine, BigInteger, Index
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -102,7 +102,7 @@ from app.models.github import (
 class StockHolding(Base):
     """股票持仓"""
     __tablename__ = "stock_holdings"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     symbol = Column(String(20), index=True)  # AAPL, 00700.HK
     name = Column(String(100))
@@ -110,7 +110,48 @@ class StockHolding(Base):
     shares = Column(Float)
     avg_cost = Column(Float)
     current_price = Column(Float)
-    updated_at = Column(DateTime, default=datetime.utcnow)
+    is_virtual = Column(Boolean, default=True)  # 虚拟持仓 vs 真实持仓
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class StockPriceHistory(Base):
+    """股票价格历史记录"""
+    __tablename__ = "stock_price_history"
+
+    id = Column(Integer, primary_key=True, index=True)
+    symbol = Column(String(20), index=True)
+    name = Column(String(100))
+    market = Column(String(10))  # US, HK, CN
+    currency = Column(String(10))
+
+    # 价格数据
+    price = Column(Float)
+    previous_close = Column(Float, nullable=True)
+    change = Column(Float, nullable=True)
+    change_pct = Column(Float, nullable=True)
+
+    # 当日数据
+    day_high = Column(Float, nullable=True)
+    day_low = Column(Float, nullable=True)
+    volume = Column(BigInteger, nullable=True)
+
+    # 52周数据
+    fifty_two_week_high = Column(Float, nullable=True)
+    fifty_two_week_low = Column(Float, nullable=True)
+
+    # 其他数据
+    market_cap = Column(BigInteger, nullable=True)
+
+    # 记录时间
+    recorded_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+    class Config:
+        # 复合索引用于快速查询
+        __table_args__ = (
+            Index('idx_symbol_recorded', 'symbol', 'recorded_at'),
+        )
 
 
 class WeatherData(Base):
