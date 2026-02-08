@@ -144,8 +144,9 @@ class WeatherService:
             result = await session.execute(
                 select(WeatherData).where(WeatherData.city == city)
                 .order_by(WeatherData.fetched_at.desc())
+                .limit(1)
             )
-            return result.scalar_one_or_none()
+            return result.scalar()
     
     async def _save_weather_data(self, city: str, data: Dict) -> WeatherData:
         """保存天气数据到数据库"""
