@@ -1,9 +1,10 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+import os
 
 from app.core.config import get_settings
-from app.core.auth import verify_token
+from app.core.auth import verify_token, CF_ACCESS_ENABLED
 from app.db.database import init_db
 from app.api import trello, github, stocks, weather, timeline, dashboard
 
@@ -42,8 +43,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# API Routes - 添加 Token 保护
-auth_dependency = [Depends(verify_token)] if not settings.DEBUG else []
+# API Routes - 添加 Token 保护（跳过 DEBUG 模式）
+# 在 Cloudflare Access 模式下也跳过本地 token 验证
+auth_dependency = [Depends(verify_token)] if not settings.DEBUG and not CF_ACCESS_ENABLED else []
 
 app.include_router(trello.router, prefix="/api/trello", tags=["Trello"], dependencies=auth_dependency)
 app.include_router(github.router, prefix="/api/github", tags=["GitHub"], dependencies=auth_dependency)
@@ -56,7 +58,7 @@ app.include_router(dashboard.router, prefix="/api/dashboard", tags=["Dashboard"]
 @app.get("/health")
 async def health_check():
     """健康检查 - 不需要 token"""
-    return {"status": "ok", "app": settings.APP_NAME}
+    return {"status": "ok", "app": settings.APP_NAME, "cf_access": CF_ACCESS_ENABLED}
 
 
 @app.get("/")
@@ -65,6 +67,7 @@ async def root():
     return {
         "message": "Personal Dashboard API",
         "version": "0.1.0",
-        "auth_required": True,
+        "auth_required": not settings.DEBUG,
+        "cf_access_enabled": CF_ACCESS_ENABLED,
         "docs": "/docs" if settings.DEBUG else None
     }
