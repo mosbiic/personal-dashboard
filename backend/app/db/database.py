@@ -23,10 +23,13 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True, index=True)
     email = Column(String(100), unique=True, index=True)
+    github_id = Column(String(50), unique=True, nullable=True)
+    avatar_url = Column(String(500), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     
     data_sources = relationship("DataSource", back_populates="user")
     activities = relationship("Activity", back_populates="user")
+    github_token = relationship("GitHubToken", back_populates="user", uselist=False)
 
 
 class DataSource(Base):
@@ -85,17 +88,15 @@ class TrelloCard(Base):
     updated_at = Column(DateTime, default=datetime.utcnow)
 
 
-class GitHubEvent(Base):
-    """GitHub 事件缓存"""
-    __tablename__ = "github_events"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    event_id = Column(String(50), unique=True)
-    event_type = Column(String(50))  # PushEvent, PullRequestEvent, IssuesEvent
-    repo_name = Column(String(100))
-    actor = Column(String(50))
-    payload = Column(JSON)
-    created_at = Column(DateTime)
+# 导入 GitHub 模型
+from app.models.github import (
+    GitHubToken,
+    GitHubRepository,
+    GitHubCommit,
+    GitHubPullRequest,
+    GitHubIssue,
+    GitHubContributionStats
+)
 
 
 class StockHolding(Base):
