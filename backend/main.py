@@ -30,6 +30,7 @@ app = FastAPI(
 allowed_origins = [
     "http://localhost:5173",
     "http://localhost:3000",
+    "http://localhost:3001",
     "https://dashboard.mosbiic.com",  # Cloudflare Tunnel 域名
 ]
 
