@@ -8,7 +8,13 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 BACKEND_DIR="$PROJECT_DIR/backend"
 FRONTEND_DIR="$PROJECT_DIR/frontend"
 
+# 固定端口配置
+BACKEND_PORT=8000
+FRONTEND_PORT=3000
+
 echo "🚀 启动 Personal Dashboard..."
+echo "   后端端口: $BACKEND_PORT"
+echo "   前端端口: $FRONTEND_PORT"
 
 # 检查环境
 check_env() {
@@ -36,8 +42,8 @@ start_backend() {
     pip install -q -r requirements.txt
     
     # 启动服务
-    echo "🌐 后端运行在 http://localhost:8000"
-    uvicorn main:app --host 0.0.0.0 --port 8000 --reload &
+    echo "🌐 后端运行在 http://localhost:$BACKEND_PORT"
+    uvicorn main:app --host 0.0.0.0 --port $BACKEND_PORT --reload &
     BACKEND_PID=$!
     echo $BACKEND_PID > /tmp/dashboard_backend.pid
 }
@@ -53,8 +59,8 @@ start_frontend() {
         npm install
     fi
     
-    echo "🌐 前端运行在 http://localhost:5173"
-    npm run dev &
+    echo "🌐 前端运行在 http://localhost:$FRONTEND_PORT"
+    npm run dev -- --port $FRONTEND_PORT &
     FRONTEND_PID=$!
     echo $FRONTEND_PID > /tmp/dashboard_frontend.pid
 }
@@ -125,8 +131,8 @@ case "${1:-start}" in
         start_frontend
         echo ""
         echo "✅ Dashboard 已启动!"
-        echo "📱 前端: http://localhost:5173"
-        echo "🔌 API: http://localhost:8000"
+        echo "📱 前端: http://localhost:$FRONTEND_PORT"
+        echo "🔌 API: http://localhost:$BACKEND_PORT"
         echo ""
         echo "按 Ctrl+C 停止服务"
         wait
