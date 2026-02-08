@@ -1,13 +1,21 @@
 <script setup>
+import { onMounted } from 'vue'
 import { useDashboardStore } from '../stores/dashboard'
+import TokenAuth from './TokenAuth.vue'
+import WeatherWidget from './WeatherWidget.vue'
 
 const dashboard = useDashboardStore()
+
+onMounted(() => {
+  dashboard.fetchWeather()
+})
 </script>
 
 <template>
   <header class="bg-slate-800 border-b border-slate-700">
     <div class="container mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
+        <!-- Logo -->
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,11 +28,19 @@ const dashboard = useDashboardStore()
           </div>
         </div>
 
-        <nav class="flex gap-4">
-          <router-link to="/" class="text-slate-300 hover:text-white transition" active-class="text-blue-400">概览</router-link>
-          <router-link to="/timeline" class="text-slate-300 hover:text-white transition" active-class="text-blue-400">时间轴</router-link>
-          <router-link to="/settings" class="text-slate-300 hover:text-white transition" active-class="text-blue-400">设置</router-link>
-        </nav>
+        <!-- 中间：天气小组件 -->
+        <WeatherWidget />
+
+        <!-- 右侧：导航 + Token -->
+        <div class="flex items-center gap-6">
+          <nav class="flex gap-4">
+            <router-link to="/" class="text-slate-300 hover:text-white transition" active-class="text-blue-400">概览</router-link>
+            <router-link to="/timeline" class="text-slate-300 hover:text-white transition" active-class="text-blue-400">时间轴</router-link>
+            <router-link to="/settings" class="text-slate-300 hover:text-white transition" active-class="text-blue-400">设置</router-link>
+          </nav>
+          
+          <TokenAuth />
+        </div>
       </div>
     </div>
   </header>
