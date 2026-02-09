@@ -4,26 +4,23 @@ from functools import wraps
 
 
 class CloudflareAccessAuth:
-    """Cloudflare Access 认证类 - 只使用 CF Headers"""
+    """Cloudflare Access 认证类 - 优先检查 IP 白名单，然后 CF Headers"""
     
     async def __call__(self, request: Request) -> bool:
-        """FastAPI 依赖调用 - 只检查 Cloudflare Access Headers"""
-        # 检查 Cloudflare Access Headers (SSO 模式)
+        """FastAPI 依赖调用 - 优先检查 IP 白名单，然后 Cloudflare Access Headers"""
+        # 1. 检查 IP 白名单（本地开发自动通过）
+        client_ip = request.client.host if request.client else None
+        if client_ip in ("127.0.0.1", "localhost", "::1"):
+            return True
+        
+        # 2. 检查 Cloudflare Access Headers (SSO 模式)
         cf_email = request.headers.get("CF-Access-Authenticated-User-Email")
         
         if cf_email:
             # Cloudflare Access 认证成功
             return True
         
-        # 本地开发模式检测
-        host = request.headers.get("Host", "")
-        if "localhost" in host or "127.0.0.1" in host:
-            raise HTTPException(
-                status_code=401,
-                detail="Local development mode. Please use Cloudflare Tunnel (https://*.mosbiic.com) or set up local CF Access headers for testing."
-            )
-        
-        # 生产环境必须通过 Cloudflare Access
+        # 3. 生产环境必须通过 Cloudflare Access
         raise HTTPException(
             status_code=401,
             detail="Authentication required. Please access via https://*.mosbiic.com with Cloudflare Access."
