@@ -1,7 +1,10 @@
 """API Token 认证模块 - 只支持 Cloudflare Access SSO"""
 from fastapi import Request, HTTPException, Depends
 from functools import wraps
+import os
 
+# Cloudflare Access 是否启用（生产环境自动启用）
+CF_ACCESS_ENABLED = os.getenv("CF_ACCESS_ENABLED", "true").lower() == "true"
 
 class CloudflareAccessAuth:
     """Cloudflare Access 认证类 - 优先检查 IP 白名单，然后 CF Headers"""

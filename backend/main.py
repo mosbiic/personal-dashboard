@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 import os
 
 from app.core.config import get_settings
-from app.core.auth import verify_token, CF_ACCESS_ENABLED
+from app.core.auth import verify_auth, CF_ACCESS_ENABLED
 from app.db.database import init_db
 from app.api import trello, github, stocks, weather, timeline, dashboard
 
@@ -45,7 +45,7 @@ app.add_middleware(
 
 # API Routes - 添加 Token 保护（跳过 DEBUG 模式）
 # 在 Cloudflare Access 模式下也跳过本地 token 验证
-auth_dependency = [Depends(verify_token)] if not settings.DEBUG and not CF_ACCESS_ENABLED else []
+auth_dependency = [Depends(verify_auth)] if not settings.DEBUG and not CF_ACCESS_ENABLED else []
 
 app.include_router(trello.router, prefix="/api/trello", tags=["Trello"], dependencies=auth_dependency)
 app.include_router(github.router, prefix="/api/github", tags=["GitHub"], dependencies=auth_dependency)

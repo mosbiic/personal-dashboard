@@ -11,17 +11,17 @@ case "$1" in
     # 启动后端 API
     cd "$WORKSPACE_DIR/backend"
     source venv/bin/activate
-    nohup uvicorn main:app --host 0.0.0.0 --port 8000 > /tmp/dashboard_api.log 2>&1 &
+    nohup uvicorn main:app --host 0.0.0.0 --port 18000 > /tmp/dashboard_api.log 2>&1 &
     echo $! > "$PID_FILE.api"
     
     # 启动前端静态服务器
     cd "$WORKSPACE_DIR/frontend/dist"
-    nohup python3 -m http.server 3002 > /tmp/dashboard_web.log 2>&1 &
+    nohup python3 -m http.server 13002 > /tmp/dashboard_web.log 2>&1 &
     echo $! > "$PID_FILE.web"
     
     echo "Dashboard 已启动"
-    echo "- API: http://localhost:8000"
-    echo "- Web: http://localhost:3002"
+    echo "- API: http://localhost:18000"
+    echo "- Web: http://localhost:13002"
     echo "- 公网: https://dashboard.mosbiic.com"
     ;;
     
@@ -46,16 +46,16 @@ case "$1" in
     
   status)
     echo "=== Dashboard 服务状态 ==="
-    if curl -s http://localhost:8000/health > /dev/null 2>&1; then
-      echo "✅ API (port 8000): 运行中"
+    if curl -s http://localhost:18000/health > /dev/null 2>&1; then
+      echo "✅ API (port 18000): 运行中"
     else
-      echo "❌ API (port 8000): 未运行"
+      echo "❌ API (port 18000): 未运行"
     fi
     
-    if curl -s http://localhost:3002/ > /dev/null 2>&1; then
-      echo "✅ Web (port 3002): 运行中"
+    if curl -s http://localhost:13002/ > /dev/null 2>&1; then
+      echo "✅ Web (port 13002): 运行中"
     else
-      echo "❌ Web (port 3002): 未运行"
+      echo "❌ Web (port 13002): 未运行"
     fi
     
     echo ""

@@ -10,12 +10,12 @@ export default defineConfig({
     }
   },
   server: {
-    port: 3002,
+    port: 13002,
     strictPort: true,
     allowedHosts: ['dashboard.mosbiic.com'],
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost:18000',
         changeOrigin: true
       }
     }

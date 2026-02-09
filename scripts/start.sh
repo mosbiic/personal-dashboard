@@ -9,8 +9,8 @@ BACKEND_DIR="$PROJECT_DIR/backend"
 FRONTEND_DIR="$PROJECT_DIR/frontend"
 
 # 固定端口配置
-BACKEND_PORT=8000
-FRONTEND_PORT=3000
+BACKEND_PORT=18000
+FRONTEND_PORT=13002
 
 echo "🚀 启动 Personal Dashboard..."
 echo "   后端端口: $BACKEND_PORT"

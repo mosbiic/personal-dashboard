@@ -36,6 +36,9 @@ class Settings(BaseSettings):
     # API Token Protection
     DASHBOARD_API_TOKEN: str = ""
     
+    # Cloudflare Access
+    CF_ACCESS_ENABLED: bool = True
+    
     class Config:
         env_file = ".env"
 
