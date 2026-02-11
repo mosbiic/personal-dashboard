@@ -29,7 +29,8 @@ app = FastAPI(
 
 # CORS - 允许本地开发和生产环境
 allowed_origins = [
-    "http://localhost:5173",
+    "http://localhost:13002",  # 前端开发服务器
+    "http://localhost:5173",   # Vite 默认端口（备用）
     "http://localhost:3000",
     "http://localhost:3001",
     "https://dashboard.mosbiic.com",  # Cloudflare Tunnel 域名

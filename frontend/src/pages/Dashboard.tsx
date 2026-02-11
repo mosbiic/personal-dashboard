@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { LayoutDashboard, RefreshCw, Settings, Loader2 } from 'lucide-react';
 import { useDashboardData, useRefreshDashboard } from '../hooks/useDashboard';
 import { useDashboardStore } from '../store/useDashboardStore';
@@ -6,14 +7,16 @@ import { GitHubCard } from '../components/GitHubCard';
 import { StockCard } from '../components/StockCard';
 import { WeatherCard } from '../components/WeatherCard';
 import { Timeline } from '../components/Timeline';
+import { LanguageSwitcher } from '../components/LanguageSwitcher';
 
 export function Dashboard() {
+  const { t, i18n } = useTranslation();
   const { summary, timeline, isLoading } = useDashboardData();
   const { refresh } = useRefreshDashboard();
   const { autoRefresh, setAutoRefresh, errors } = useDashboardStore();
   
-  // 获取当前时间显示
-  const currentTime = new Date().toLocaleString('zh-CN', {
+  // Get current time display based on language
+  const currentTime = new Date().toLocaleString(i18n.language === 'zh' ? 'zh-CN' : 'en-US', {
     month: 'long',
     day: 'numeric',
     weekday: 'long',
@@ -36,12 +39,15 @@ export function Dashboard() {
                 <LayoutDashboard className="w-5 h-5 text-indigo-400" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Personal Dashboard</h1>
+                <h1 className="text-xl font-bold text-white">{t('app.title')}</h1>
                 <p className="text-xs text-slate-400">{currentTime}</p>
               </div>
             </div>
             
             <div className="flex items-center gap-2">
+              {/* Language Switcher */}
+              <LanguageSwitcher />
+              
               {/* Auto refresh toggle */}
               <button
                 onClick={() => setAutoRefresh(!autoRefresh)}
@@ -51,10 +57,10 @@ export function Dashboard() {
                     ? 'bg-green-500/20 text-green-400' 
                     : 'bg-slate-700 text-slate-400'}
                 `}
-                title={autoRefresh ? '自动刷新已开启' : '自动刷新已关闭'}
+                title={autoRefresh ? t('header.autoRefreshOnTooltip') : t('header.autoRefreshOffTooltip')}
               >
                 <div className={`w-2 h-2 rounded-full ${autoRefresh ? 'bg-green-400 animate-pulse' : 'bg-slate-500'}`} />
-                <span className="hidden sm:inline">{autoRefresh ? '自动刷新' : '手动刷新'}</span>
+                <span className="hidden sm:inline">{autoRefresh ? t('header.autoRefreshOn') : t('header.autoRefreshOff')}</span>
               </button>
               
               {/* Refresh button */}
@@ -68,13 +74,13 @@ export function Dashboard() {
                 ) : (
                   <RefreshCw className="w-4 h-4" />
                 )}
-                <span className="hidden sm:inline">刷新</span>
+                <span className="hidden sm:inline">{t('header.refresh')}</span>
               </button>
               
               {/* Settings placeholder */}
               <button
                 className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
-                title="设置"
+                title={t('header.settings')}
               >
                 <Settings className="w-4 h-4" />
               </button>
@@ -136,7 +142,7 @@ export function Dashboard() {
         
         {/* Footer */}
         <footer className="mt-12 text-center text-sm text-slate-500">
-          <p>Personal Dashboard • React + TypeScript + Tailwind CSS</p>
+          <p>{t('app.footer')}</p>
         </footer>
       </main>
     </div>

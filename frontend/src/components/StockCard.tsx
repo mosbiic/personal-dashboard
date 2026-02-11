@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { TrendingUp, TrendingDown, DollarSign, Loader2 } from 'lucide-react';
 import type { PortfolioData } from '../types/dashboard';
 
@@ -8,13 +9,15 @@ interface StockCardProps {
 }
 
 export function StockCard({ data, isLoading, error }: StockCardProps) {
+  const { t } = useTranslation();
+
   if (isLoading) {
     return (
       <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-green-400" />
-            <h3 className="text-lg font-semibold text-white">股票盈亏</h3>
+            <h3 className="text-lg font-semibold text-white">{t('cards.stock.title')}</h3>
           </div>
         </div>
         <div className="flex items-center justify-center py-8">
@@ -29,7 +32,7 @@ export function StockCard({ data, isLoading, error }: StockCardProps) {
       <div className="bg-slate-800 rounded-xl p-6 border border-red-700/50 shadow-lg">
         <div className="flex items-center gap-2 mb-4">
           <DollarSign className="w-5 h-5 text-green-400" />
-          <h3 className="text-lg font-semibold text-white">股票盈亏</h3>
+          <h3 className="text-lg font-semibold text-white">{t('cards.stock.title')}</h3>
         </div>
         <p className="text-red-400 text-sm">{error}</p>
       </div>
@@ -55,7 +58,7 @@ export function StockCard({ data, isLoading, error }: StockCardProps) {
           <div className="p-2 bg-green-500/20 rounded-lg">
             <DollarSign className="w-5 h-5 text-green-400" />
           </div>
-          <h3 className="text-lg font-semibold text-white">股票盈亏</h3>
+          <h3 className="text-lg font-semibold text-white">{t('cards.stock.title')}</h3>
         </div>
         <div className={`flex items-center gap-1 px-2 py-1 rounded-lg ${
           isProfit ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
@@ -74,13 +77,13 @@ export function StockCard({ data, isLoading, error }: StockCardProps) {
           {isProfit ? '+' : ''}${totalPnl.toFixed(2)}
         </p>
         <p className="text-sm text-slate-400 mt-1">
-          总市值: ${totalValue.toFixed(2)}
+          {t('cards.stock.totalValue')}: ${totalValue.toFixed(2)}
         </p>
       </div>
 
       {topHoldings.length > 0 && (
         <div className="mt-4 pt-4 border-t border-slate-700">
-          <p className="text-sm text-slate-400 mb-3">持仓 Top 3</p>
+          <p className="text-sm text-slate-400 mb-3">{t('cards.stock.topHoldings')}</p>
           <div className="space-y-2">
             {topHoldings.map((holding) => {
               const pnl = holding.pnl ?? 0;
@@ -89,7 +92,7 @@ export function StockCard({ data, isLoading, error }: StockCardProps) {
                 <div key={holding.symbol} className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-white">{holding.symbol}</span>
-                    <span className="text-slate-500">{holding.shares} 股</span>
+                    <span className="text-slate-500">{holding.shares} {t('cards.stock.shares')}</span>
                   </div>
                   <span className={isHoldingProfit ? 'text-green-400' : 'text-red-400'}>
                     {isHoldingProfit ? '+' : ''}${pnl.toFixed(0)}

@@ -1,5 +1,7 @@
+import { useTranslation } from 'react-i18next';
 import { format, parseISO, isToday, isYesterday } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 import type { TimelineActivity } from '../types/dashboard';
 
 interface TimelineItemProps {
@@ -7,15 +9,18 @@ interface TimelineItemProps {
   isLast?: boolean;
 }
 
-function formatTime(dateStr: string): string {
+function formatTime(dateStr: string, isZh: boolean): string {
   const date = parseISO(dateStr);
+  const locale = isZh ? zhCN : enUS;
   
   if (isToday(date)) {
     return format(date, 'HH:mm');
   } else if (isYesterday(date)) {
-    return `昨天 ${format(date, 'HH:mm')}`;
+    return isZh 
+      ? `昨天 ${format(date, 'HH:mm')}`
+      : `Yesterday ${format(date, 'HH:mm')}`;
   } else {
-    return format(date, 'MM/dd HH:mm', { locale: zhCN });
+    return format(date, 'MM/dd HH:mm', { locale });
   }
 }
 
@@ -28,6 +33,8 @@ const sourceColors: Record<string, string> = {
 };
 
 export function TimelineItem({ activity, isLast = false }: TimelineItemProps) {
+  const { t, i18n } = useTranslation();
+  const isZh = i18n.language === 'zh';
   const colorClass = sourceColors[activity.source_type] || 'bg-slate-500/20 text-slate-400 border-slate-500/50';
   
   return (
@@ -83,7 +90,7 @@ export function TimelineItem({ activity, isLast = false }: TimelineItemProps) {
           </div>
           
           <time className="text-xs text-slate-500 flex-shrink-0">
-            {formatTime(activity.occurred_at)}
+            {formatTime(activity.occurred_at, isZh)}
           </time>
         </div>
         
@@ -95,7 +102,7 @@ export function TimelineItem({ activity, isLast = false }: TimelineItemProps) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 mt-2 transition-colors"
           >
-            查看详情 →
+            {t('timeline.viewDetails')} →
           </a>
         )}
       </div>

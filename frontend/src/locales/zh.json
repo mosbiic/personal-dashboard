@@ -1,0 +1,60 @@
+{
+  "app": {
+    "title": "Personal Dashboard",
+    "footer": "Personal Dashboard • React + TypeScript + Tailwind CSS"
+  },
+  "header": {
+    "autoRefreshOn": "自动刷新",
+    "autoRefreshOff": "手动刷新",
+    "autoRefreshOnTooltip": "自动刷新已开启",
+    "autoRefreshOffTooltip": "自动刷新已关闭",
+    "refresh": "刷新",
+    "settings": "设置"
+  },
+  "cards": {
+    "trello": {
+      "title": "Trello 任务",
+      "completedToday": "今日完成",
+      "pending": "待办",
+      "completionRate": "完成率"
+    },
+    "github": {
+      "title": "GitHub 活动",
+      "commitsToday": "今日提交",
+      "openPRs": "开放 PR",
+      "active": "活跃",
+      "collaborating": "协作中"
+    },
+    "stock": {
+      "title": "股票盈亏",
+      "totalPnl": "总盈亏",
+      "totalValue": "总市值",
+      "topHoldings": "持仓 Top 3",
+      "shares": "股"
+    },
+    "weather": {
+      "title": "天气",
+      "feelsLike": "体感",
+      "humidity": "湿度",
+      "windSpeed": "风速",
+      "unknown": "未知"
+    }
+  },
+  "timeline": {
+    "title": "活动时间轴",
+    "todayTitle": "今日活动",
+    "today": "今天",
+    "activitiesCount": "{{count}} 条活动",
+    "noActivities": "暂无活动记录",
+    "noActivitiesToday": "今天还没有任何活动",
+    "viewDetails": "查看详情"
+  },
+  "time": {
+    "yesterday": "昨天"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "refresh": "刷新"
+  }
+}

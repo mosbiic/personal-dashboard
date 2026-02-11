@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Circle, ListTodo, Loader2 } from 'lucide-react';
 import type { TrelloSummary } from '../types/dashboard';
 
@@ -8,13 +9,15 @@ interface TrelloCardProps {
 }
 
 export function TrelloCard({ data, isLoading, error }: TrelloCardProps) {
+  const { t } = useTranslation();
+
   if (isLoading) {
     return (
       <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <ListTodo className="w-5 h-5 text-blue-400" />
-            <h3 className="text-lg font-semibold text-white">Trello 任务</h3>
+            <h3 className="text-lg font-semibold text-white">{t('cards.trello.title')}</h3>
           </div>
         </div>
         <div className="flex items-center justify-center py-8">
@@ -29,7 +32,7 @@ export function TrelloCard({ data, isLoading, error }: TrelloCardProps) {
       <div className="bg-slate-800 rounded-xl p-6 border border-red-700/50 shadow-lg">
         <div className="flex items-center gap-2 mb-4">
           <ListTodo className="w-5 h-5 text-blue-400" />
-          <h3 className="text-lg font-semibold text-white">Trello 任务</h3>
+          <h3 className="text-lg font-semibold text-white">{t('cards.trello.title')}</h3>
         </div>
         <p className="text-red-400 text-sm">{error}</p>
       </div>
@@ -46,7 +49,7 @@ export function TrelloCard({ data, isLoading, error }: TrelloCardProps) {
           <div className="p-2 bg-blue-500/20 rounded-lg">
             <ListTodo className="w-5 h-5 text-blue-400" />
           </div>
-          <h3 className="text-lg font-semibold text-white">Trello 任务</h3>
+          <h3 className="text-lg font-semibold text-white">{t('cards.trello.title')}</h3>
         </div>
       </div>
 
@@ -54,7 +57,7 @@ export function TrelloCard({ data, isLoading, error }: TrelloCardProps) {
         <div className="bg-slate-700/50 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
             <CheckCircle2 className="w-4 h-4 text-green-400" />
-            <span className="text-sm text-slate-400">今日完成</span>
+            <span className="text-sm text-slate-400">{t('cards.trello.completedToday')}</span>
           </div>
           <p className="text-2xl font-bold text-white">{completed}</p>
         </div>
@@ -62,7 +65,7 @@ export function TrelloCard({ data, isLoading, error }: TrelloCardProps) {
         <div className="bg-slate-700/50 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
             <Circle className="w-4 h-4 text-amber-400" />
-            <span className="text-sm text-slate-400">待办</span>
+            <span className="text-sm text-slate-400">{t('cards.trello.pending')}</span>
           </div>
           <p className="text-2xl font-bold text-white">{pending}</p>
         </div>
@@ -70,7 +73,7 @@ export function TrelloCard({ data, isLoading, error }: TrelloCardProps) {
 
       <div className="mt-4 pt-4 border-t border-slate-700">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-slate-400">完成率</span>
+          <span className="text-slate-400">{t('cards.trello.completionRate')}</span>
           <span className="text-white font-medium">
             {completed + pending > 0 ? Math.round((completed / (completed + pending)) * 100) : 0}%
           </span>

@@ -1,0 +1,60 @@
+{
+  "app": {
+    "title": "Personal Dashboard",
+    "footer": "Personal Dashboard • React + TypeScript + Tailwind CSS"
+  },
+  "header": {
+    "autoRefreshOn": "Auto Refresh",
+    "autoRefreshOff": "Manual Refresh",
+    "autoRefreshOnTooltip": "Auto refresh is on",
+    "autoRefreshOffTooltip": "Auto refresh is off",
+    "refresh": "Refresh",
+    "settings": "Settings"
+  },
+  "cards": {
+    "trello": {
+      "title": "Trello Tasks",
+      "completedToday": "Completed Today",
+      "pending": "Pending",
+      "completionRate": "Completion Rate"
+    },
+    "github": {
+      "title": "GitHub Activity",
+      "commitsToday": "Commits Today",
+      "openPRs": "Open PRs",
+      "active": "Active",
+      "collaborating": "Collaborating"
+    },
+    "stock": {
+      "title": "Stock P&L",
+      "totalPnl": "Total P&L",
+      "totalValue": "Total Value",
+      "topHoldings": "Top 3 Holdings",
+      "shares": "shares"
+    },
+    "weather": {
+      "title": "Weather",
+      "feelsLike": "Feels Like",
+      "humidity": "Humidity",
+      "windSpeed": "Wind Speed",
+      "unknown": "Unknown"
+    }
+  },
+  "timeline": {
+    "title": "Activity Timeline",
+    "todayTitle": "Today's Activities",
+    "today": "Today",
+    "activitiesCount": "{{count}} activities",
+    "noActivities": "No activities recorded",
+    "noActivitiesToday": "No activities today",
+    "viewDetails": "View Details"
+  },
+  "time": {
+    "yesterday": "Yesterday"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "refresh": "Refresh"
+  }
+}

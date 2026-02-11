@@ -103,11 +103,11 @@ ingress:
   # API 路由
   - hostname: dashboard.mosbiic.com
     path: /api
-    service: http://localhost:8000
+    service: http://localhost:18000
   
   # 前端静态文件
   - hostname: dashboard.mosbiic.com
-    service: http://localhost:5173
+    service: http://localhost:13002
   
   # 默认回退
   - service: http_status:404
